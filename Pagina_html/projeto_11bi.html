@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Alberson Wander</title>
+</head>
+<style>
+    body {
+        background-color: rgb(85, 85, 85);
+    }
+
+    body a {
+       color: rgb(223, 223, 223);
+    }
+
+    .cabecalho {
+        text-align: center;
+        background-color: rgb(45, 45, 45);
+        color: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+
+    .estagio {
+        text-align: center;
+        color: white;
+        background-color: rgb(73, 133, 202);
+        border-radius: 10px;
+    }
+
+    .notasat {
+        text-align: center;  
+    }
+    .notasat button a {
+        text-decoration: none;
+        color: white;
+    }
+    .notasat button {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border: 0px solid black;
+        border-radius: 00px;
+        font-size: 25px;
+        background-color: rgb(85, 85, 85);
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+    .notasat button:hover {
+        background-color: rgb(123, 175, 155);
+    }
+
+    /*
+    .notasat table td, tr{
+        border: 0;
+    }
+    .notasat button a {
+        text-decoration: none;
+        color: white;
+    }
+    .botaoat button{
+        margin-left: 15px;
+        margin-right: 15px;
+        padding: 7px;
+    }
+    */
+    .titulos {
+        color: white;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .barra {
+        color: white;
+    }
+
+    .tabelas {
+        /* FUNDO */
+        background-color: rgb(20, 20, 20);
+        border-radius: 5px;
+        margin: 25px;
+        padding: 10px;
+    }
+
+    /* ULTIMA TABELA */
+
+    .ultima {
+        text-align: center;
+        color: white;
+        width: 90%;
+        margin-top: 50px;
+        margin-bottom: 100px;
+    }
+
+    /* -------------  BOTOES */
+    .botoes {
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .botoes button {
+        border: 1px solid black;
+        padding: 10px 20px;
+        border-radius: 15px;
+        color: white;
+        font-size: 25px;
+        margin-left: 15px;
+        margin-right: 15px;
+        background-color: rgb(65, 65, 65);
+    }
+
+    .botoes button a {
+        text-decoration: none;
+    }
+
+    .botoes button:hover {
+        background-color: rgb(91, 178, 158);
+    }
+    /**/
+
+    th {
+        border: 3px solid white;
+    }
+
+    td {
+        border: 3px solid white;
+    }
+
+    .imagem {
+    width: 90px; /* largura desejada */
+    height: auto; /* altura ajustada automaticamente para manter a proporção */
+}
+.logotec{
+    width: 120px; /* largura desejada */
+    height: 120px; /* altura ajustada automaticamente para manter a proporção */
+}
+
+
+</style>
+
+<body>
+    <!--CABEÇALHO-->
+    <div class="container mt-3 mb-5">
+        <div class="cabecalho">
+            <img src="\murilolima\teste_projetos\site_alberson1bim\logoinfo.png" class="logotec" align="left">
+            <img src="\murilolima\teste_projetos\site_alberson1bim\logoeletr.png" class="logotec" align="right">
+            <!-- imagem do cabeçalho do site do Alberson: https://www1.univap.br/alberson/cabecalho.png -->
+            <h1>Prof. Alberson Wander Sá dos Santos<br>Informática / Eletrônica<br>Colégios Univap Centro</h1> 
+        </div>
+        <!--INFORMAÇÕES DE ESTÁGIO-->
+        <div class="estagio">
+            <h2>Para informações sobre <b>ESTÁGIO :</b></h2><br>
+            <strong>Antes de iniciar:</strong>
+            <p> Solicite ao setor de ESTÁGIO do colégio a documentação necessária para oficializar o vinculo entre a
+                escola e a empresa.<br>
+                A empresa deve providenciar o seu <strong>SEGURO DE VIDA</strong>, o qual deve ter a mesma data do dia
+                inicial ao seu estágio.</p><br>
+            <strong>Durante o estágio:</strong>
+            <p>A empresa deve preencher a ficha de avaliação referente ao seu rendimento no estágio, <br>
+                o qual deve ser entregue periodicamente na escola.</p><br>
+            <strong>Apóes o estágio:</strong>
+            <p> O aluno/estagiário deve entregar o relatório de estágio na escola, o qual será avaliado pelo coordenador
+                do curso.<br>
+                O modelo do relatório tabém deve ser retirado no setor de estágio no colégio.</p>
+            <span class="container bg-danger"><strong>PRAZO PARA A ENTREGA DO RELATÓRIO : 2 anos apartir do ano de
+                    conclusão do curso.</strong></span>
+        </div>
+    </div>
+    <div class="notasat">
+            <img src="\murilolima\teste_projetos\site_alberson1bim\albersonsemfundo.png" class="imagem">
+            <button><a href = "https://www1.univap.br/alberson/at1/"><img src="https://www1.univap.br/alberson/notas.gif" class="imagem"></a></button>
+            <button><a href = "https://www1.univap.br/alberson/at2/"><img src="https://www1.univap.br/alberson/notas2.gif" class="imagem"></a></button>
+            <button><a href = "https://www1.univap.br/alberson/at3/"><img src="https://www1.univap.br/alberson/notas3.gif" class="imagem"></a></button>
+            <button><a href = "https://www1.univap.br/alberson/at4/"><img src="https://www1.univap.br/alberson/notas4.gif" class="imagem"></a></button>
+        <!-- 
+            <span class="barra"> <h1><ins>---------------------------------------------------------------------------------</ins></h1></span>
+        -->     
+    </div>
+    <!--CONTEUDO-->
+    <div class="tabelas">
+        <div class="titulos">
+            <h2>1 ano Eletrônica<br></h2>
+            <h3>- informática aplicada -</h3><br>
+            <div class="tabelaprimeiroelet">
+                <table style="width:100%">
+                    <tr>
+                        <th>
+                            <h4>Bimestre</h4>
+                        </th>
+                        <th>
+                            <h4>Apostila</h4>
+                        </th>
+                        <th>
+                            <h4>Listas Exerc.</h4>
+                        </th>
+                        <th>
+                            <h4>Projetos</h4>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>1°</td>
+                        <td><a href="https://www1.univap.br/alberson/apostilas/ia/aulas_ia_1bi.pptx">Apostila de Variáveis, Escreva(al),
+                                leia, atribuição </a></td>
+                        <td><a href="https://www1.univap.br/alberson/exercicios/ipc_le/lista_ipc_1bi.pdf">Exercícios de Variáveis,
+                                Escreva(al), leia, atribuição</a> </td>
+                        <td><a href="https://www1.univap.br/alberson/exercicios/ia/projeto_ia_1bi.docx">AT1 - INFORMÁTICA APLICADA </a></td>
+                    </tr>
+                    <!--
+                        <tr>
+                            <td>2°</td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/apostilas/ia/para.pptx" > Para</a> <br>
+                                <a href = "https://www1.univap.br/alberson/apostilas/ia/enquanto.pptx"> Enquanto</a> <br>
+                                <a href = "https://www1.univap.br/alberson/apostilas/ia/repita.pptx"> Repita</a>
+                            </td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/exercicios/ia/lista_ipc_1_2bi.pdf">Exercícios (comando se() ) - I.A.</a> <br>
+                                <a href = "https://www1.univap.br/alberson/exercicios/ia/lista_ipc_2bi.pdf">Exercícios (Laços de Repetições) - I.A. </a>
+                            </td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/exercicios/ia/projeto_ia_2bi.docx">AT2 - INFORMÁTICA APLICADA </a>
+                            </td>
+                        </tr>
+                    -->
+                    <!--
+                        <tr>
+                            <td>3°</td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/apostilas/ia/aulas_ia_3bi.pptx">DevC++ - Inf. Aplicada</a> <br>
+                            </td>
+                            <td>
+                                <h4>INDISPONIVEL</h4>
+                            </td>
+                            <td>
+                                 <h4>INDISPONIVEL</h4>
+                            </td>
+                        </tr>
+                   -->
+                    <!--
+                        <tr>
+                            <td>4°</td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/apostilas/ia/aula_ipc_le_2bi.pptx">Comando for()</a> <br>
+				                <a href = "https://www1.univap.br/alberson/apostilas/ia/1o_ano_le_ia_while.pptx">Comando while()</a> <br>
+				                <a href = "https://www1.univap.br/alberson/apostilas/ia/1o_ano_le_ia_dowhile.pptx">Comando do{...}while();</a>
+                            </td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/exercicios/ia/lista_ia_1_2bi.pdf">Lista 2 de Inf. Aplicada (3º bimestre)</a> <br>
+                            </td>
+                            <td>
+                                 <a href = "https://www1.univap.br/alberson/exercicios/ia/projeto_ia_4bi.doc">PROJETO de Informática Aplicada (4º bimestre)</a>
+                            </td>
+                        </tr>
+                    -->
+                </table>
+            </div>
+        </div>
+        <div class="titulos">
+            <h2>1 ano Informática<br></h2>
+            <h3>- introdução a programação de computadores -</h3><br>
+            <div class="tabelaprimeiroinfor">
+                <table e style="width:100%">
+                    <tr>
+                        <th>
+                            <h4>Bimestre</h4>
+                        </th>
+                        <th>
+                            <h4>Apostila</h4>
+                        </th>
+                        <th>
+                            <h4>Listas Exerc.</h4>
+                        </th>
+                        <th>
+                            <h4>Projetos</h4>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>1°</td>
+                        <td><a href="https://www1.univap.br/alberson/apostilas/ipc/aulas_ipc_1bi.pptx">Apostila de Variáveis, Escreva(al),
+                                leia, atribuição</a></td>
+                        <td><a href="https://www1.univap.br/alberson/exercicios/ipc_le/lista_ipc_1bi.pdf"> Exercícios de I.P.C </a> </td>
+                        <td><a href="https://www1.univap.br/alberson/exercicios/ipc_le/projeto_ipc_le_1bi.docx">AT1 - I.P.C.</a></td>
+                    </tr>
+                    <!-- 2° BIMESTRE 
+                        <tr>
+                            <td>2°</td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/apostilas/ipc/para.pptx" > Para</a> <br>
+                                <a href = "https://www1.univap.br/alberson/apostilas/ipc/enquanto.pptx"> Enquanto</a> <br>
+                                <a href = "https://www1.univap.br/alberson/apostilas/ipc/repita.pptx"> Repita</a>
+                            </td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/exercicios/ipc_le/lista_ipc_1_2bi.pdf">Exercícios (COMANDOS se e if()) - I.P.C - </a> <br>
+					            <a href = "https://www1.univap.br/alberson/exercicios/ipc_le/lista_ipc_2bi.pdf">Exercícios (Laços de Repetições) IPC </a> 
+                            </td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/exercicios/ipc_le/projeto_ipc_le_2bi.docx">AT2 - I.P.C. - </a>
+                            </td>
+                        </tr>
+                    -->
+                    <!--
+                        <tr> 3° Bimestre 
+                            <td>3°</td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/apostilas/ipc/apostila_ipc_vetor.pptx" >IPC-Vetores</a> <br>
+				                <a href = "https://www1.univap.br/alberson/apostilas/ipc/apostila_ipc_matrizes.pptx" >IPC-Matrizes</a>
+                            </td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/exercicios/ipc_le/lista_ipc_3bi.pdf"> IPC </a>
+                            </td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/exercicios/ipc_le/projeto_ipc_le_3bi.docx">I.P.C.</a>
+                            </td>
+                        </tr>
+                    -->
+                    <!--
+                        <tr> 4° Bimestre 
+                            <td>4°</td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/apostilas/ipc/procedimentosfuncoes.zip" >SLIDES Procedimentos e Funções</a>
+                            </td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/exercicios/ipc_le/lista_ipc_4bi.pdf">IPC </a>
+                            </td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/exercicios/ipc_le/projeto_ipc_4bi.docx">I.P.C.</a>
+                            </td>
+                        </tr>
+                    -->
+                </table>
+            </div>
+        </div>
+        <div class="titulos">
+            <h2>2 ano Informática<br></h2>
+            <h3>- Programação orientada a objeto I -</h3><br>
+            <div class="tabelasegundoinfor">
+                <table e style="width:100%">
+                    <tr>
+                        <th>
+                            <h4>Bimestre</h4>
+                        </th>
+                        <th>
+                            <h4>Apostila</h4>
+                        </th>
+                        <th>
+                            <h4>Listas Exerc.</h4>
+                        </th>
+                        <th>
+                            <h4>Projetos</h4>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>1°</td>
+                        <td><a href="https://www1.univap.br/alberson/apostilas/ipc/aulas_ipc_1bi.pptx">Apostila de Variáveis, Escreva(al),
+                                leia, atribuição</a></td>
+                        <td><a href="https://www1.univap.br/alberson/exercicios/ipc_le/lista_ipc_1bi.pdf"> Exercícios de I.P.C </a> </td>
+                        <td><a href="https://www1.univap.br/alberson/exercicios/ipc_le/projeto_ipc_le_1bi.docx">AT1 - I.P.C.</a></td>
+                    </tr>
+                    <!-- 2° BIMESTRE 
+                        <tr>
+                            <td>2°</td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/apostilas/pooi/apostila_pooi_2bi.pdf" > Para</a> <br>
+                            </td>
+                            <td>
+                                <h4>INDISPONIVEL</h4>
+                            </td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/exercicios/pooi/projeto_pooi_2bi.docx">AT2 - P.O.O.I</a>
+                            </td>
+                        </tr>
+                    -->
+                    <!--
+                        <tr> 3° Bimestre 
+                            <td>3°</td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/apostilas/pooi/apostila_pooi_3bi.pdf" >3º bimestre - P.O.O.I.</a>
+                            </td>
+                            <td>
+                                <h4>INDISPONIVEL</h4>
+                            </td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/exercicios/pooi/projeto_pooi_3bi.docx">Projeto de P.O.O.I (3º bimestre)</a>
+                            </td>
+                        </tr>
+                    -->
+                    <!--
+                        <tr> 4° Bimestre 
+                            <td>4°</td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/apostilas/pooi/apostila_pooi_4bi.pdf" >4º bimestre - P.O.O.I.</a> 
+                            </td>
+                            <td>
+                                <h4>INDISPONIVEL</h4>
+                            </td>
+                            <td>
+                                <a href = "https://www1.univap.br/alberson/exercicios/pooi/projeto_pooi_4bi.docx">Projeto de P.O.O.I (4º bimestre)</a>
+                            </td>
+                        </tr>
+                    -->
+                </table>
+            </div>
+        </div>
+        <div class="titulos">
+            <h2>3 ano Informática<br></h2>
+            <h3>- Desenvolvimentos de sistemas - TCC -</h3><br>
+            <div class="tabelaterceiroinfor">
+                <table style="width:100%">
+                    <tr>
+                        <td><a href="https://www1.univap.br/alberson/propostatcc.doc">Ficha Proposta T.C.C.(Digitada)</a></td>
+                        <td><a href="https://www1.univap.br/alberson/apostilas/ds/artigoinic.pdf">Exemplo de ARTIGO INIC</a></td>
+                        <td><a href="https://www1.univap.br/alberson/apostilas/ds/cronograma.pdf">CRONOGRAMA T.C.C. </a></td>
+                        <td><a href="https://www1.univap.br/alberson/apostilas/ds/manualmonografia.pdf">Manual Monografia 2024</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--
+        <span class="barra">
+            <h1><ins>---------------------------------------------------------------------------------</ins></h1>
+        </span>
+    -->
+    <div class="ultimatab">
+        <table class="ultima" align="center">
+            <tr>
+                <td>Programas</td>
+                <td>Pag. Professores</td>
+                <td>Ficha projetos</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="https://www1.univap.br/alberson/instaladores/visualg3065.zip">VisuAlg 3.0.6.5 (Info. / Elet.)</a><br>
+                    <a href="https://www1.univap.br/alberson/instaladores/dev-c.exe">Dev C++ (Versão 5.11)(Info. / Elet.)</a><br>
+                    <a href="https://www.python.org">Site Oficial Python (2º Info.)</a><br>
+                    <a href="https://www.jetbrains.com/pt-br/pycharm/download/#section=windows">PyCharm - JetBrains (2º
+                        Info.)</a><br>
+                    <a href="https://www1.univap.br/alberson/instaladores/uml.zip">Pacestar UML (3º Info.)</a>
+                </td>
+                <td>
+                    <a href="http://www.helioesperidiao.com">Hélio</a><br>
+                    <a href="http://www1.univap.br/bruno.pera">Bruno</a>
+                </td>
+                <td>
+                    <a href="https://www1.univap.br/alberson/fichaprojetos.pdf">Ficha de projeto</a><br>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="botoes">
+        <button><a href="http://portal.univap.br/DOnline/DOnline/avisos/TDOL303D.tp">Professores</a></button>
+        <button><a href="http://portal.univap.br/AOnline/AOnline/avisos/T016D.tp">Alunos</a></button>
+        <!--<img src="https://www1.univap.br/alberson/alberson.png" class="imagem">-->
+    </div>
+    <br><br><br>
+    <img src="https://www1.univap.br/alberson/rodape.png" class="rodape" border="2px" width="100%">
+    <br>
+</body>
+
+</html>
