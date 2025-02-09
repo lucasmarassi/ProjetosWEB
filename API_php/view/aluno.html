@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Aluno</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"], input[type="number"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, input[type="password"]:focus {
+            border-color: #66afe9;
+            outline: none;
+            box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin: 5px;
+            border: none;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Cadastro de Alunos</h1>
+
+    <div class="container">
+        <div>
+            <label for="txtNomeAluno">NOME:</label>
+            <input type="text" id="txtNomeAluno">
+            <label for="txtid_curso">ID DO CURSO:</label>
+            <input type="number" id="txtid_curso">
+            <label for="txtEmail">EMAIL:</label>
+            <input type="text" id="txtEmail">
+            <label for="txtSenha">SENHA:</label>
+            <input type="password" id="txtSenha">
+        </div>
+        
+        <div>
+            <label for="txtFiltro">FILTRO:</label>
+            <input type="text" id="txtFiltro">
+        </div>
+
+        <div style="text-align: center;">
+            <button class="btn" id="btnCadastrar">Cadastrar Aluno</button>
+        </div>
+
+        <div id="divDados"></div>
+    </div>
+
+   <script>
+    let JSON_ALUNO = {};
+//    const txtid_a = document.getElementById("txtid_a");
+    const txtNomeAluno = document.getElementById("txtNomeAluno");
+    const txtEmail = document.getElementById("txtEmail");
+    const txtid_curso = document.getElementById("txtid_curso");
+    const txtSenha = document.getElementById("txtSenha");
+
+    const txtFiltro = document.getElementById("txtFiltro");
+
+    txtFiltro.onkeyup = function() {
+
+        construirTabela(JSON_ALUNO,txtFiltro.value);
+
+    }
+
+    //
+
+    const divDados = document.getElementById("divDados");
+
+    const btnCadastrar = document.getElementById("btnCadastrar");
+
+    const dadosLocalStorage = localStorage.getItem("Dados");
+//    alert(dadosLocalStorage);
+    const objUsuario = JSON.parse(dadosLocalStorage);
+
+    const tabela = document.createElement("table");
+
+// CSS DA TABELA 
+
+tabela.style.borderStyle='solid';
+
+divDados.appendChild(tabela);
+
+const linha1 = document.createElement("tr");
+
+const td0 = document.createElement("th");
+const td1 = document.createElement("th");
+const td2 = document.createElement("th");
+const td2_3 = document.createElement("th");
+const td3 = document.createElement("th");
+const td4 = document.createElement("th");
+
+linha1.appendChild(td0);
+linha1.appendChild(td1);
+linha1.appendChild(td2);
+linha1.appendChild(td2_3);
+linha1.appendChild(td3);
+linha1.appendChild(td4);
+
+td0.appendChild(document.createTextNode("ID | "));
+td1.appendChild(document.createTextNode("EMAIL | "));
+td2.appendChild(document.createTextNode("NOME | "));
+td2_3.appendChild(document.createTextNode("SELECIONAR | "));
+td3.appendChild(document.createTextNode("ATUALIZAR | "));
+td4.appendChild(document.createTextNode("EXCLUIR | "));
+
+
+    get_aluno();
+
+//    alert(objUsuario.token);
+
+    btnCadastrar.onclick = function() { post_aluno(); }
+
+//
+//LIMPAR TABELA 
+
+function limparTabela() {
+    var qtd_linhas=1;
+    var totalLinhas = tabela.rows.length;
+    for(let i = qtd_linhas; i<totalLinhas;i++) {
+        tabela.deleteRow(qtd_linhas);
+    }
+}
+
+function delete_aluno(id_a){
+    const uri = "/aluno/"+id_a;
+
+//        alert("Entrou no Get_aluno");
+
+        fetch(uri,{
+                method:"DELETE",
+                headers:{
+                    'Accept':'application/json',
+                    'contet-Type':'application/json',
+                    'Authorization':'Bearer '+ objUsuario.token
+                }
+            }
+        ).then((resposta)=>{
+            return resposta.text();
+        }).then(respostaConvertida =>{
+            console.log(respostaConvertida);
+            alert("Aluno Excluido");
+            get_aluno();
+        }).catch(error => {
+            console.log(error);
+        })
+}
+
+
+/*
+function construirTabela(objJson,filtro) {
+    //LIMPANDO TABELA
+    limparTabela();
+//    alert("Entrou no construir Tabela");
+    
+    // Localizar o índice onde começa a parte inválida do JSON
+    //const indiceToken = objJson.indexOf(']["Token Novo"]');
+    // Separamos o array de alunos
+    //const jsonAlunos = objJson.substring(0, indiceToken + 1);
+    // Converte a string JSON válida em um array de objetos
+
+    const indiceToken = objJson.indexOf(']["Token Novo"]');
+    const jsonAlunos = objJson.substring(0, indiceToken + 1);
+
+    //alert(jsonAlunos);
+
+    const nomeAluno = jsonAlunos.nome;
+    const emailAluno = jsonAlunos.email;
+
+    // Itera sobre cada objeto do array
+
+    tabela.appendChild(linha1);
+
+    objJson.forEach(function(jsonAlunos) {
+        // Exibe um alert com o nome e o email do aluno
+//        alert("Nome: " + aluno.nome + "\nEmail: " + aluno.email);
+
+        const linha1 = document.createElement("tr");
+        const btnExcluir = document.createElement("button");
+        btnExcluir.appendChild(document.createTextNode("Excluir"));
+        
+        btnExcluir.onclick = function() {
+//            const id_a = aluno.id_a;
+///            alert(id_a);   
+
+            delete_aluno(jsonAlunos.id_a);
+        }
+
+        const btnAtualizar = document.createElement("button");
+        btnAtualizar.appendChild(document.createTextNode("Atualizar"));
+//
+        btnAtualizar.onclick = function() {
+            const id_a = aluno.id_a;
+            put_aluno(id_a);
+        }
+
+        const btnSelecionar = document.createElement("button");
+        btnSelecionar.appendChild(document.createTextNode("Selecionar"));
+//
+        btnSelecionar.onclick = function() {
+            txtNomeAluno.value = aluno.nome;
+            txtid_curso.value = aluno.id_curso;
+            txtEmail.value = aluno.email;
+            txtSenha.value = aluno.senha;
+        }
+
+        const td0 = document.createElement("td");
+        const td1 = document.createElement("td");
+        const td2 = document.createElement("td");
+        const td2_3 = document.createElement("td");
+        const td3 = document.createElement("td");
+        const td4 = document.createElement("td");
+        
+        td0.appendChild(document.createTextNode(aluno.id_a + " | "));
+        td1.appendChild(document.createTextNode(aluno.email + " | "));
+        td2.appendChild(document.createTextNode(aluno.nome + " | "));
+        td2_3.appendChild(btnSelecionar);
+        td3.appendChild(btnAtualizar);
+        td4.appendChild(btnExcluir);
+
+        linha1.appendChild(td0);
+        linha1.appendChild(td1);
+        linha1.appendChild(td2);
+        linha1.appendChild(td2_3);
+        linha1.appendChild(td3);
+        linha1.appendChild(td4);
+
+        tabela.appendChild(linha1);
+
+    });
+    
+    // Extraímos o token, se necessário
+//    const token = textoJson.substring(indiceToken + 15); // 15 é o comprimento de ']["Token Novo"]'
+//    alert("Token: " + token);
+    
+//    alert("Encerrou construir Tabela");
+}
+*/
+
+function construirTabela(objJson, filtro) {
+    // Limpando tabela
+    limparTabela();
+
+    // Verificar se objJson é um array
+    if (Array.isArray(objJson)) {
+        // Converte o filtro para minúsculas
+        filtro = filtro.toLowerCase();
+
+        // Itera sobre cada objeto do array
+        objJson.forEach(function(aluno) {
+            // Verifica se nomeAluno existe
+            if (!aluno.nome) return; // Pular se nomeAluno não existir
+
+            // Filtra o nome do aluno
+            let nomeAluno = aluno.nome.toLowerCase();
+
+            // Se o nome do aluno não incluir o filtro, pular para a próxima iteração
+            if (!nomeAluno.includes(filtro)) return;
+
+            // Cria uma nova linha para a tabela
+            const linha1 = document.createElement("tr");
+
+            // Cria os botões
+            const btnExcluir = document.createElement("button");
+            btnExcluir.appendChild(document.createTextNode("Excluir"));
+            btnExcluir.onclick = function() {
+                delete_aluno(aluno.id_a);
+            };
+
+            const btnAtualizar = document.createElement("button");
+            btnAtualizar.appendChild(document.createTextNode("Atualizar"));
+            btnAtualizar.onclick = function() {
+                put_aluno(aluno.id_a);
+            };
+
+            const btnSelecionar = document.createElement("button");
+            btnSelecionar.appendChild(document.createTextNode("Selecionar"));
+            btnSelecionar.onclick = function() {
+                txtNomeAluno.value = aluno.nome;
+                txtid_curso.value = aluno.id_curso;
+                txtEmail.value = aluno.email;
+                txtSenha.value = aluno.senha;
+            };
+
+            // Cria as células da linha
+            const td0 = document.createElement("td");
+            const td1 = document.createElement("td");
+            const td2 = document.createElement("td");
+            const td2_3 = document.createElement("td");
+            const td3 = document.createElement("td");
+            const td4 = document.createElement("td");
+
+            td0.appendChild(document.createTextNode(aluno.id_a + " | "));
+            td1.appendChild(document.createTextNode(aluno.email + " | "));
+            td2.appendChild(document.createTextNode(aluno.nome + " | "));
+            td2_3.appendChild(btnSelecionar);
+            td3.appendChild(btnAtualizar);
+            td4.appendChild(btnExcluir);
+            
+
+            // Adiciona as células à linha
+            linha1.appendChild(td0);
+            linha1.appendChild(td1);
+            linha1.appendChild(td2);
+            linha1.appendChild(td2_3);
+            linha1.appendChild(td3);
+            linha1.appendChild(td4);
+
+            // Adiciona a linha à tabela
+            tabela.appendChild(linha1);
+        });
+    } else {
+        console.error("objJson não é um array.");
+    }
+}
+
+
+/* ERRO NO CONTINUE 
+
+function construirTabela(objJson, filtro) {
+    // Limpando tabela
+    limparTabela();
+
+    // Verificar se objJson é um array
+    if (Array.isArray(objJson)) {
+        // Itera sobre cada objeto do array
+        objJson.forEach(function(aluno) {
+
+            let nomeAluno = aluno.nome;
+            nomeAluno = nomeAluno.toLowerCase();
+            filtro = filtro.toLowerCase();
+
+            if(nomeAluno.includes(filtro) == false)     {
+                continue;
+            }
+
+            const linha1 = document.createElement("tr");
+
+            // Cria os botões
+            const btnExcluir = document.createElement("button");
+            btnExcluir.appendChild(document.createTextNode("Excluir"));
+            btnExcluir.onclick = function() {
+                delete_aluno(aluno.id_a);
+            };
+
+            const btnAtualizar = document.createElement("button");
+            btnAtualizar.appendChild(document.createTextNode("Atualizar"));
+            btnAtualizar.onclick = function() {
+                put_aluno(aluno.id_a);
+            };
+
+            const btnSelecionar = document.createElement("button");
+            btnSelecionar.appendChild(document.createTextNode("Selecionar"));
+            btnSelecionar.onclick = function() {
+                txtNomeAluno.value = aluno.nome;
+                txtid_curso.value = aluno.id_curso;
+                txtEmail.value = aluno.email;
+                txtSenha.value = aluno.senha;
+            };
+
+            // Cria as células da linha
+            const td0 = document.createElement("td");
+            const td1 = document.createElement("td");
+            const td2 = document.createElement("td");
+            const td2_3 = document.createElement("td");
+            const td3 = document.createElement("td");
+            const td4 = document.createElement("td");
+
+            td0.appendChild(document.createTextNode(aluno.id_a + " | "));
+            td1.appendChild(document.createTextNode(aluno.email + " | "));
+            td2.appendChild(document.createTextNode(aluno.nome + " | "));
+            td2_3.appendChild(btnSelecionar);
+            td3.appendChild(btnAtualizar);
+            td4.appendChild(btnExcluir);
+
+            // Adiciona as células à linha
+            linha1.appendChild(td0);
+            linha1.appendChild(td1);
+            linha1.appendChild(td2);
+            linha1.appendChild(td2_3);
+            linha1.appendChild(td3);
+            linha1.appendChild(td4);
+
+            // Adiciona a linha à tabela
+            tabela.appendChild(linha1);
+        });
+    } else {
+        console.error("objJson não é um array.");
+    }
+}
+
+*/
+
+/*
+    // Localizar o índice onde começa a parte inválida do JSON
+    const indiceToken = textoJson.indexOf(']["Token Novo"]');
+    
+    // Separamos o array de alunos
+    const jsonAlunos = textoJson.substring(0, indiceToken + 1);
+    
+    // Converte a string JSON válida em um array de objetos
+    const objJson = JSON.parse(jsonAlunos);
+*/
+
+function get_aluno() {
+    const uri = "/aluno";
+
+    fetch(uri, {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',  // Corrigido 'contet-Type' para 'Content-Type'
+            'Authorization': 'Bearer ' + objUsuario.token
+        }
+    }).then((resposta) => {
+        return resposta.text();  // Recebendo como texto para manipulação
+    }).then(respostaConvertida => {
+//        console.log("Resposta completa recebida:", respostaConvertida);
+
+        // Dividindo a resposta em duas partes: JSON e Token
+        const partesResposta = respostaConvertida.split(']["Token Novo"]');
+        const jsonParte = partesResposta[0] + ']'; // Corrigindo o fechamento do array JSON
+        const tokenParte = partesResposta[1];
+        
+        // Atualizando as variáveis globais JSON_ALUNO e novoToken
+  
+        JSON_ALUNO = JSON.parse(jsonParte);  // Parse do JSON da parte dos alunos
+         
+        // Usar JSON_ALUNO conforme necessário
+        construirTabela(JSON_ALUNO,'');
+
+    }).catch(error => {
+        console.log(error);
+    });
+}
+
+
+/*
+    function get_aluno() {
+
+        const uri = "/aluno";
+
+//        alert("Entrou no Get_aluno");
+
+        fetch(uri,{
+                method:"GET",
+                headers:{
+                    'Accept':'application/json',
+                    'contet-Type':'application/json',
+                    'Authorization':'Bearer '+ objUsuario.token
+                }
+            }
+        ).then((resposta)=>{
+            return resposta.text();
+        }).then(respostaConvertida =>{
+
+            JSON_ALUNO = JSON.parse(respostaConvertida);
+            console.log(respostaConvertida);
+            construirTabela(respostaConvertida,'');
+
+        }).catch(error => {
+            console.log(error);
+        })
+
+    }
+*/
+//
+
+    function post_aluno() {
+        const uri = "/aluno";
+        
+//        const id_a = txtid_a.value;
+        const nomeAluno = txtNomeAluno.value;
+        const email = txtEmail.value;
+        const id_curso = txtid_curso.value;
+        const senha = txtSenha.value;
+
+        const objAluno = {
+//            id_a: id_a,
+            nome: nomeAluno,
+            id_curso: id_curso,
+            email: email,
+            senha: senha
+        }
+              
+        fetch(uri,{
+                method:"POST",
+                body:JSON.stringify(objAluno),
+                headers:{
+                    'Accept':'application/json',
+                    'contet-Type':'application/json',
+                    'Authorization':'Bearer '+ objUsuario.token
+                }
+            }
+        ).then((resposta)=>{
+            return resposta.text();
+        }).then(respostaConvertida =>{
+            const obj = JSON.parse(respostaConvertida);
+            if (obj.cod == 201){
+                get_aluno();
+                alert("Cadastrado");
+                window.location.reload();
+            }else{
+                alert(" ERRO ao Cadastrado");
+            }
+            console.log(respostaConvertida);
+            
+        }).catch(error => {
+            console.log(error);
+           
+        })
+        
+    }
+
+    function put_aluno(id_a) {
+        const uri = "/aluno/"+id_a;
+        
+//        const id_a = txtid_a.value;
+        const nomeAluno = txtNomeAluno.value;
+        const email = txtEmail.value;
+        const id_curso = txtid_curso.value;
+        const senha = txtSenha.value;
+
+        const objAluno = {
+//            id_a: id_a,
+            nome: nomeAluno,
+            id_curso: id_curso,
+            email: email,
+            senha: senha
+        }
+        
+ 
+        fetch(uri,{
+                method:"PUT",
+                body:JSON.stringify(objAluno),
+                headers:{
+                    'Accept':'application/json',
+                    'contet-Type':'application/json',
+                    'Authorization':'Bearer '+ objUsuario.token
+                }
+            }
+        ).then((resposta)=>{
+            return resposta.text();
+        }).then(respostaConvertida =>{
+            const obj = JSON.parse(respostaConvertida);
+        
+            if (obj.cod == 4){
+                alert("Atualizado");
+                window.location.reload();
+            }else{
+                alert("ERRO ao atualizar");
+            }
+            
+            if (obj.cod == 201){
+                get_aluno();
+                
+            }
+            
+            console.log(respostaConvertida);
+        }).catch(error => {
+            console.log(error);
+            alert("ERRO ao atualizar");
+        })
+    }
+
+</script>
+</body>
+</html>
+

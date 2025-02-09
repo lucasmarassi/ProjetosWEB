@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt_br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .input-group input:focus {
+            border-color: #5b9bd5;
+            outline: none;
+        }
+
+        #btnLogin {
+            width: 100%;
+            background-color: #5b9bd5;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        #btnLogin:hover {
+            background-color: #4a8ac1;
+        }
+
+        #divResposta {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #e74c3c;
+            text-align: center;
+        }
+
+        /* Responsividade para dispositivos móveis */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <div class="input-group">
+            <label for="txtEmail">Email:</label>
+            <input type='email' id='txtEmail'>
+        </div>
+        <div class="input-group">
+            <label for="txtSenha">Senha:</label>
+            <input type='password' id='txtSenha'>
+        </div>
+        <div class="input-group">
+            <label for="txtPapel">Papel:</label>
+            <input type='text' id='txtPapel'>
+        </div>
+        <div>
+            <button id='btnLogin'>Login</button>
+        </div>
+        <div id="divResposta"></div>
+    </div>
+
+    <script>
+        const btnLogin = document.getElementById('btnLogin');
+        const txtEmail = document.getElementById('txtEmail');
+        const txtSenha = document.getElementById('txtSenha');
+        const txtPapel = document.getElementById('txtPapel');
+
+        const divResposta = document.getElementById('divResposta');
+
+        btnLogin.onclick = function() {FazerLogin();}
+        
+        function FazerLogin() {
+            const email = txtEmail.value;
+            const senha = txtSenha.value;
+            const papel = txtPapel.value;
+            
+            let obj_json = {};
+
+            if (papel === "aluno") {
+                obj_json = {
+                    email: email,
+                    senha: senha,
+                    papel: papel
+                }
+            } else if (papel === "professor") {
+                obj_json = {
+                    email: email,
+                    senha: senha,
+                    papel: papel
+                }
+            }
+
+            let uri = '';
+
+            if (papel === "aluno") {
+                uri = '/aluno/login';
+            } else if (papel === "professor") {
+                uri = '/professor/login';
+            }
+            
+            fetch(uri, {
+                method: "POST",
+                body: JSON.stringify(obj_json),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((resposta_backend) => {
+                return resposta_backend.text();
+            }).then((texto_resposta_back) => {
+                console.log(texto_resposta_back);
+                processarResultados(texto_resposta_back);
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+
+        function processarResultados(texto_json) {
+            const obj_json = JSON.parse(texto_json);
+
+            if (obj_json.cod != 200) {
+                alert("Login inválido");
+                const lblResposta = document.createTextNode("Login inválido");
+                divResposta.appendChild(lblResposta);
+            } else {
+                alert("Login válido");
+                localStorage.setItem("Dados", texto_json);
+                window.location.href = 'painel.html';
+            }
+        }
+    </script>
+</body>
+</html>

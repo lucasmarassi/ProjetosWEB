@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Professor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        .input-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .btn-update {
+            background-color: #5bc0de;
+            color: white;
+        }
+        .btn-update:hover {
+            background-color: #31b0d5;
+        }
+        .btn-delete {
+            background-color: #d9534f;
+            color: white;
+        }
+        .btn-delete:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro de Professor</h1>
+        
+        <div class="input-group">
+            <label for="txtid_prof">ID</label>
+            <input type="number" id="txtid_prof" placeholder="ID" disabled>
+        </div>
+        <div class="input-group">
+            <label for="txtnome">Nome</label>
+            <input type="text" id="txtnome" placeholder="Nome">
+        </div>
+        <div class="input-group">
+            <label for="txtemail">Email</label>
+            <input type="email" id="txtemail" placeholder="Email">
+        </div>
+        <div class="input-group">
+            <label for="txtdatanascimento">Data de Nascimento</label>
+            <input type="date" id="txtdatanascimento">
+        </div>
+        <div class="input-group">
+            <label for="txtsenha">Senha</label>
+            <input type="password" id="txtsenha" placeholder="Senha">
+        </div>
+
+        <button id="btnCadastrar">Cadastrar</button>
+
+        <div id="divDados"></div>
+    </div>
+</body>
+
+<script>
+    let JSON_PROFESSOR = {};
+    
+    const dadosLocalStorage = localStorage.getItem("Dados");
+    const objUsuario = JSON.parse(dadosLocalStorage);
+
+    const txtid_prof = document.getElementById("txtid_prof");
+    const txtnome = document.getElementById("txtnome");
+    const txtemail = document.getElementById("txtemail");
+    const txtdatanascimento = document.getElementById("txtdatanascimento");
+    const txtsenha = document.getElementById("txtsenha");
+
+    const divDados = document.getElementById("divDados");
+    const tabela = document.createElement("table");
+    divDados.appendChild(tabela);
+    const linha1 = document.createElement("tr");
+    const td0 = document.createElement("td");
+    const td1 = document.createElement("td");
+    const td2 = document.createElement("td");
+    const td3 = document.createElement("td");
+
+    const td4 = document.createElement("td");
+    const td5 = document.createElement("td");
+    const td6 = document.createElement("td");
+
+td0.appendChild(document.createTextNode("ID | "));
+td1.appendChild(document.createTextNode("NOME | "));
+td2.appendChild(document.createTextNode("EMAIL | "));
+td3.appendChild(document.createTextNode("DATA DE NASCIMENTO | "));
+td4.appendChild(document.createTextNode("SELECIONAR | "));
+td5.appendChild(document.createTextNode("ATUALIZAR | "));
+td6.appendChild(document.createTextNode("EXCLUIR | "));
+
+tabela.appendChild(linha1);
+
+linha1.appendChild(td0);
+linha1.appendChild(td1);
+linha1.appendChild(td2);
+linha1.appendChild(td3);
+linha1.appendChild(td4);
+linha1.appendChild(td5);
+linha1.appendChild(td6);
+
+function construirTabela(JSON_PROFESSOR,filtro) {
+    limparTabela();
+
+    for(let professor of JSON_PROFESSOR) {
+        let nome = professor.nome;
+        let linhaProfessor = document.createElement("tr");
+
+        const td0 = document.createElement("td");
+        const td1 = document.createElement("td");
+        const td2 = document.createElement("td");
+        const td3 = document.createElement("td");
+
+        const td4 = document.createElement("td");
+        const td5 = document.createElement("td");
+        const td6 = document.createElement("td");
+
+        td0.appendChild(document.createTextNode(professor.id_prof));
+        td1.appendChild(document.createTextNode(professor.nome));
+        td2.appendChild(document.createTextNode(professor.email));
+        td3.appendChild(document.createTextNode(professor.data_nascimento));
+
+        const btnSelecionar = document.createElement("button");
+        btnSelecionar.appendChild(document.createTextNode("Selecionar"))
+        btnSelecionar.onclick = function(){
+            const obj = professor;
+            select_professor(obj);
+        }
+        td4.appendChild(btnSelecionar);
+
+        const btnAtualizar = document.createElement("button");
+        btnAtualizar.appendChild(document.createTextNode("Atualizar"))
+        btnAtualizar.onclick = function() {update_professor();}
+        td5.appendChild(btnAtualizar);
+
+        const btnExcluir = document.createElement("button");
+        btnExcluir.appendChild(document.createTextNode("Excluir"));
+        btnExcluir.onclick = function() {
+            delete_professor(professor.id_prof);  // Chama a função de exclusão com o ID do professor
+        };
+        td6.appendChild(btnExcluir);
+
+        
+        linhaProfessor.appendChild(td0);
+        linhaProfessor.appendChild(td1);
+        linhaProfessor.appendChild(td2);
+        linhaProfessor.appendChild(td3);
+        linhaProfessor.appendChild(td4);
+        linhaProfessor.appendChild(td5);
+        linhaProfessor.appendChild(td6);
+
+        tabela.appendChild(linhaProfessor);
+    }
+}
+
+function delete_professor(id_prof) {
+    const uri = "/professor/" + id_prof;
+
+    fetch(uri, {
+        method: "DELETE",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + objUsuario.token
+        }
+    })
+    .then(resposta => {
+        // Verifica se a resposta tem conteúdo
+        if (!resposta.ok) {
+            throw new Error("Erro ao excluir professor.");
+        }
+        // Se não houver corpo na resposta, retorna uma mensagem de sucesso
+        return resposta.text().then(texto => texto ? JSON.parse(texto) : {});
+    })
+    .then(respostaConvertida => {
+        console.log("Professor excluído com sucesso:", respostaConvertida);
+        get_professor();  // Atualiza a tabela após a exclusão
+    })
+    .catch(error => {
+        console.error("Erro ao excluir professor:", error);
+    });
+}
+
+
+
+    function update_professor() {
+
+        const id = txtid_prof.value;
+        const nome = txtnome.value; 
+        const email = txtemail.value;
+        const nascimento  = txtdatanascimento.value;
+        const senha = txtsenha.value; 
+
+        const corpo = {
+            "id_prof": id,
+            "nome": nome,
+            "email": email,
+            "data_nascimento": nascimento,
+            "senha": senha
+        }
+
+        const uri = "/professor/" + id;
+
+        fetch(uri, {
+            method: "PUT",
+            body: JSON.stringify(corpo),  // Converte para JSON string
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + objUsuario.token
+            }
+        })
+        .then(resposta => resposta.json())
+        .then(respostaConvertida => {
+            console.log("Atualizado realizado com sucesso:", respostaConvertida);
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error("Erro ao cadastrar professor:", error);
+        });
+    }
+
+    function select_professor(professor) {
+        txtid_prof.value = professor.id_prof;
+        txtnome.value = professor.nome; 
+        txtemail.value = professor.email;
+        txtdatanascimento.value = professor.data_nascimento;
+        txtsenha.value = professor.senha; 
+
+        
+    }
+
+
+function limparTabela() {
+    var qtdLinhas = 1;
+    var totalLinhas = tabela.rows.length;
+    for (let i = qtdLinhas; i < totalLinhas; i++) {
+        tabela.deleteRow(qtdLinhas); 
+    }
+}
+
+/*
+		"id_prof": 3,
+		"nome": "Ricardo",
+		"email": "Ricardo@gmail.com",
+		"data_nascimento": "2024-09-06"
+*/
+
+    const btnCadastrar = document.getElementById("btnCadastrar");
+
+    btnCadastrar.onclick = function() {
+        post_professor();
+    }
+
+
+    get_professor()
+
+    function post_professor() {
+        const uri = "/professor";
+
+        const nome = txtnome.value;
+        const email = txtemail.value;
+        const data_nascimento = txtdatanascimento.value;
+        const senha = txtsenha.value;
+
+        // Cria o corpo da requisição JSON e converte para string
+        const corpo = {
+            nome: nome,
+            email: email,
+            data_nascimento: data_nascimento,
+            senha: senha
+        };
+
+        fetch(uri, {
+            method: "POST",
+            body: JSON.stringify(corpo),  // Converte para JSON string
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + objUsuario.token
+            }
+        })
+        .then(resposta => resposta.json())
+        .then(respostaConvertida => {
+            console.log("Cadastro realizado com sucesso:", respostaConvertida);
+            alert("Cadastrado")
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error("Erro ao cadastrar professor:", error);
+        });
+    }
+
+
+    function get_professor() {
+    const uri = "/professor/";
+
+    fetch(uri, {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + objUsuario.token
+        }
+    })
+    .then((resposta) => resposta.text())
+    .then(respostaConvertida => {
+        const partesResposta = respostaConvertida.split(']["Token Novo"]');
+        const jsonParte = partesResposta[0] + ']';  // Corrigindo o JSON
+        const tokenParte = partesResposta[1];
+
+        // Parse do JSON sem try/catch
+        const jsonData = JSON.parse(jsonParte);
+        JSON_PROFESSOR = jsonData;  // Atribui diretamente o array de professores
+
+        console.log(JSON_PROFESSOR);
+        construirTabela(JSON_PROFESSOR,null);
+    })
+    .catch(error => {
+        console.log("Erro ao buscar professores:", error);
+    });
+}
+
+
+</script>
+</html>

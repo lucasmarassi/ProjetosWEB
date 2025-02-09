@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Alunos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:active {
+            background-color: #004494;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro de Alunos</h1>
+        <input type="file" id="txtArquivo">
+        <button id="btnEnviar">Enviar CSV</button>
+    </div>
+
+    <script>
+        const dadosLocalStorage = localStorage.getItem("Dados");
+        const objUsuario = JSON.parse(dadosLocalStorage);
+
+        const txtArquivo = document.getElementById('txtArquivo');
+        const btnEnviar = document.getElementById('btnEnviar');
+
+        btnEnviar.onclick = function() {
+            const dados = new FormData();
+            dados.append('variavelArquivo', txtArquivo.files[0]);
+         
+            const uri = "/aluno/csv";
+
+            fetch(uri, {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + objUsuario.token
+                },
+                body: dados
+            })
+            .then((resposta) => {
+                return resposta.text();  
+            }).then(respostaConvertida => {
+                console.log(respostaConvertida);
+                const resposta = JSON.parse(respostaConvertida);
+                if (resposta.status === true) {
+                    alert('Alunos cadastrados com sucesso');
+                }
+                if (resposta.status === false) {
+                    alert('ERRO ao cadastrar aluno');
+                }
+            }).catch(error => {
+                console.log('Erro:', error);
+                alert('ERRO ao cadastrar aluno');
+            });
+        }
+    </script>
+</body>
+</html>

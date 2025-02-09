@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Curso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: inline-block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #divDados {
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button.excluir {
+            background-color: #d9534f;
+            color: white;
+        }
+
+        button.atualizar {
+            background-color: #5bc0de;
+            color: white;
+        }
+
+        button.excluir:hover {
+            background-color: #c9302c;
+        }
+
+        button.atualizar:hover {
+            background-color: #31b0d5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gerenciamento de Cursos</h1>
+
+    <div>
+        <label for="txtid_curso">ID Curso</label>
+        <input type="number" id="txtid_curso" disabled>
+    </div>
+    <div>
+        <label for="txtnome_curso">Nome do Curso</label>
+        <input type="text" id="txtnome_curso" placeholder="Nome do Curso">
+    </div>
+    <div>
+        <label for="txtpreco_curso">Preço</label>
+        <input type="number" step="0.01" id="txtpreco_curso" placeholder="Preço">
+    </div>
+    <div>
+        <label for="txtanos_conclusao">Anos de Conclusão</label>
+        <input type="number" step="0.1" id="txtanos_conclusao" placeholder="Anos de Conclusão">
+    </div>
+    <div>
+        <label for="txtid_professor">ID Professor</label>
+        <input type="number" id="txtid_professor" placeholder="ID Professor">
+    </div>
+    <div>
+        <label for="txtemail">Email do Professor</label>
+        <input type="email" id="txtemail" placeholder="Email do Professor">
+    </div>
+    <div>
+        <label for="txtsenha">Senha</label>
+        <input type="password" id="txtsenha" placeholder="Senha">
+    </div>
+    <div>
+        <button id="btnCadastrar">Cadastrar</button>
+    </div>
+    <div id="divDados">
+        <table id="tblCursos">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome do Curso</th>
+                    <th>Preço</th>
+                    <th>Anos de Conclusão</th>
+                    <th>ID Professor</th>
+                    <th>Email</th>
+                    <th>Atualizar</th>
+                    <th>Excluir</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</body>
+    <script>
+        let JSON_CURSO = {};
+
+        const dadosLocalStorage = localStorage.getItem("Dados");
+        const objUsuario = JSON.parse(dadosLocalStorage);
+
+        const txtid_curso = document.getElementById("txtid_curso");
+        const txtnome_curso = document.getElementById("txtnome_curso");
+        const txtpreco_curso = document.getElementById("txtpreco_curso");
+        const txtanos_conclusao = document.getElementById("txtanos_conclusao");
+        const txtid_professor = document.getElementById("txtid_professor");
+        const txtemail = document.getElementById("txtemail");
+        const txtsenha = document.getElementById("txtsenha");
+
+        const btnCadastrar = document.getElementById("btnCadastrar");
+        const tblCursos = document.getElementById("tblCursos").querySelector("tbody");
+
+        // Função para listar todos os cursos
+        function getCursos() {
+            const uri = "/curso/";
+
+            fetch(uri, {
+                method: "GET",
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + objUsuario.token
+                }
+            })
+            .then(response => response.text())  // Use text() para ver a resposta completa como string
+            .then(data => {
+                console.log("Resposta completa do servidor:", data);
+                const partesResposta = data.split(']["Token Novo"]');  // Suponha que o token esteja anexado
+                const jsonParte = partesResposta[0] + ']';  // Corrigir o JSON caso necessário
+                const tokenParte = partesResposta[1];  // Aqui lidaria com o token, se for o caso
+
+                const cursos = JSON.parse(jsonParte);  // Tente fazer o parsing para JSON
+                limparTabela();
+                construirTabela(cursos);
+             }).catch(error => {
+                console.error("Erro ao buscar cursos:", error);
+            });
+
+        }
+
+        // Função para cadastrar um novo curso
+        function postCurso() {
+            const uri = "/curso";
+            const curso = {
+                nome_curso: txtnome_curso.value,
+                preco_curso: txtpreco_curso.value,
+                anos_conclusao: txtanos_conclusao.value,
+                id_professor: txtid_professor.value,
+                email: txtemail.value,
+                senha: txtsenha.value
+            };
+
+            fetch(uri, {
+                method: "POST",
+                body: JSON.stringify(curso),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + objUsuario.token
+                }
+            })
+            .then(response => response.json())
+            .then(novoCurso => {
+                getCursos();
+                console.log("Curso cadastrado com sucesso:", novoCurso);
+            })
+            .catch(error => {
+                console.error("Erro ao cadastrar curso:", error);
+            });
+        }
+
+        // Função para atualizar um curso existente
+        function updateCurso(id_curso) {
+            const uri = "/curso/" + id_curso;
+            const cursoAtualizado = {
+                nome_curso: txtnome_curso.value,
+                preco_curso: txtpreco_curso.value,
+                anos_conclusao: txtanos_conclusao.value,
+                id_professor: txtid_professor.value,
+                email: txtemail.value,
+                senha: txtsenha.value
+            };
+
+            fetch(uri, {
+                method: "PUT",
+                body: JSON.stringify(cursoAtualizado),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + objUsuario.token
+                }
+            })
+            .then(response => response.json())
+            .then(cursoAtualizado => {
+                getCursos();
+                console.log("Curso atualizado com sucesso:", cursoAtualizado);
+            })
+            .catch(error => {
+                console.error("Erro ao atualizar curso:", error);
+            });
+        }
+
+        // Função para excluir um curso
+        function deleteCurso(id_curso) {
+            const uri = "/curso/" + id_curso;
+
+            fetch(uri, {
+                method: "DELETE",
+                headers: {
+                    'Authorization': 'Bearer ' + objUsuario.token
+                }
+            })
+            .then(response => {
+                getCursos();
+                console.log("Curso excluído com sucesso.");
+            })
+            .catch(error => {
+                console.error("Erro ao excluir curso:", error);
+            });
+        }
+
+        // Função para montar a tabela de cursos
+        function construirTabela(cursos) {
+            cursos.forEach(curso => {
+                const linhaCurso = document.createElement("tr");
+
+                const tdId = document.createElement("td");
+                const tdNome = document.createElement("td");
+                const tdPreco = document.createElement("td");
+                const tdAnosConclusao = document.createElement("td");
+                const tdIdProfessor = document.createElement("td");
+                const tdEmail = document.createElement("td");
+                const tdAtualizar = document.createElement("td");
+                const tdExcluir = document.createElement("td");
+
+                tdId.textContent = curso.id_curso;
+                tdNome.textContent = curso.nome_curso;
+                tdPreco.textContent = curso.preco_curso;
+                tdAnosConclusao.textContent = curso.anos_conclusao;
+                tdIdProfessor.textContent = curso.id_professor;
+                tdEmail.textContent = curso.email;
+
+                const btnAtualizar = document.createElement("button");
+                btnAtualizar.textContent = "Atualizar";
+                btnAtualizar.onclick = () => {
+                    selectCurso(curso);
+                    updateCurso(curso.id_curso);
+                };
+                tdAtualizar.appendChild(btnAtualizar);
+
+                const btnExcluir = document.createElement("button");
+                btnExcluir.textContent = "Excluir";
+                btnExcluir.onclick = () => deleteCurso(curso.id_curso);
+                tdExcluir.appendChild(btnExcluir);
+
+                linhaCurso.appendChild(tdId);
+                linhaCurso.appendChild(tdNome);
+                linhaCurso.appendChild(tdPreco);
+                linhaCurso.appendChild(tdAnosConclusao);
+                linhaCurso.appendChild(tdIdProfessor);
+                linhaCurso.appendChild(tdEmail);
+                linhaCurso.appendChild(tdAtualizar);
+                linhaCurso.appendChild(tdExcluir);
+
+                tblCursos.appendChild(linhaCurso);
+            });
+        }
+
+        // Função para limpar a tabela antes de atualizá-la
+        function limparTabela() {
+            tblCursos.innerHTML = "";
+        }
+
+        // Função para preencher os campos ao selecionar um curso
+        function selectCurso(curso) {
+            txtid_curso.value = curso.id_curso;
+            txtnome_curso.value = curso.nome_curso;
+            txtpreco_curso.value = curso.preco_curso;
+            txtanos_conclusao.value = curso.anos_conclusao;
+            txtid_professor.value = curso.id_professor;
+            txtemail.value = curso.email;
+            txtsenha.value = curso.senha;
+        }
+
+        // Event listener para o botão de cadastrar
+        btnCadastrar.onclick = function() {
+            if (txtid_curso.value === "") {
+                postCurso();  // Cadastrar novo curso
+            } else {
+                updateCurso(txtid_curso.value);  // Atualizar curso existente
+            }
+        };
+
+        // Carregar a lista de cursos ao iniciar a página
+        getCursos();
+    </script>
+</body>
+</html>

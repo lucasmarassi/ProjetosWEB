@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt_br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #div_dados_Usuario {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        #div_dados_Usuario p {
+            margin: 10px 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: #5b9bd5;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            background-color: #5b9bd5;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #4a8ac1;
+        }
+
+        /* Responsividade para dispositivos móveis */
+        @media (max-width: 600px) {
+            #div_dados_Usuario {
+                width: 90%;
+            }
+
+            .nav-links a {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="div_dados_Usuario">
+        <p>Bem-vindo <span id="userName"></span></p>
+    </div>
+
+    <div class="nav-links">
+        <a href="aluno.html">Aluno</a>
+        <a href="professor.html">Professor</a>
+        <a href="curso.html">Curso</a>
+        <a href="cursoCSV.html">Curso CSV</a>
+        <a href="professorCSV.html">Professor CSV</a>
+        <a href="alunoCSV.html">Aluno CSV</a>
+    </div>
+
+
+</body>
+</html>
